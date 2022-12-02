@@ -9,30 +9,24 @@ export interface RockPaperScissorsGame {
   playerPlays: RockPaperScissorsMove
 }
 
-export const parseRockPaperScissorsData = (rawData: string) => {
+export const parseRockPaperScissorsData = (
+  rawData: string,
+  getPlayerMove: (
+    oppositionMove: RockPaperScissorsMove,
+    val: string
+  ) => RockPaperScissorsMove
+) => {
   const games = rawData.split('\n')
 
   return games.map<RockPaperScissorsGame>((g) => {
     const [opposition, player] = g.split(' ')
+    const oppositePlays = toOppositionMove(opposition)
 
     return {
-      oppositePlays: toOppositionMove(opposition),
-      playerPlays: toPlayerMove(player),
+      oppositePlays,
+      playerPlays: getPlayerMove(oppositePlays, player),
     }
   })
-}
-
-const toPlayerMove = (rawMove: string): RockPaperScissorsMove => {
-  switch (rawMove) {
-    case 'X':
-      return RockPaperScissorsMove.Rock
-    case 'Y':
-      return RockPaperScissorsMove.Paper
-    case 'Z':
-      return RockPaperScissorsMove.Scissors
-    default:
-      throw new Error(`Unrecognised move: ${rawMove}`)
-  }
 }
 
 const toOppositionMove = (rawMove: string): RockPaperScissorsMove => {

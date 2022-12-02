@@ -1,4 +1,8 @@
 import {
+  GameOutcome,
+  GAME_OPPOSITION_TO_PLAYER_OUTCOME_MAP,
+} from './gameVictoryMap'
+import {
   RockPaperScissorsGame,
   RockPaperScissorsMove,
 } from './parseRockPaperScissorsData'
@@ -12,40 +16,10 @@ export const getGameScore = (game: RockPaperScissorsGame) => {
   return playerMovePoints + gamePoints
 }
 
-enum GameOutcome {
-  PlayerWin = 'PlayerWin',
-  Draw = 'Draw',
-  OppositionWin = 'OppositionWin',
-}
-
 const getGameOutcome = (game: RockPaperScissorsGame) => {
-  if (game.oppositePlays === game.playerPlays) {
-    return GameOutcome.Draw
-  }
-
-  switch (game.oppositePlays) {
-    case RockPaperScissorsMove.Paper: {
-      if (game.playerPlays === RockPaperScissorsMove.Scissors) {
-        return GameOutcome.PlayerWin
-      } else {
-        return GameOutcome.OppositionWin
-      }
-    }
-    case RockPaperScissorsMove.Rock: {
-      if (game.playerPlays === RockPaperScissorsMove.Paper) {
-        return GameOutcome.PlayerWin
-      } else {
-        return GameOutcome.OppositionWin
-      }
-    }
-    case RockPaperScissorsMove.Scissors: {
-      if (game.playerPlays === RockPaperScissorsMove.Rock) {
-        return GameOutcome.PlayerWin
-      } else {
-        return GameOutcome.OppositionWin
-      }
-    }
-  }
+  return GAME_OPPOSITION_TO_PLAYER_OUTCOME_MAP[game.oppositePlays][
+    game.playerPlays
+  ]
 }
 
 const getPlayerMovePoints = (move: RockPaperScissorsMove) => {
