@@ -9,3 +9,4 @@ This year is my first time trying the Advent of Code. Although it's a language I
 ## Calendar
 
 - [Day 1](src/day1)
+- [Day 2](src/day2)
