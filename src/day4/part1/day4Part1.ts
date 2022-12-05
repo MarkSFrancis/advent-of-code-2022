@@ -1,9 +1,9 @@
 import { parseSectionData } from '../parseSectionData'
-import { readDay3Data } from '../readData'
+import { readDay4Data } from '../readData'
 import { sectionWraps } from './sectionWraps'
 
 export const day4Part1 = () => {
-  const data = readDay3Data()
+  const data = readDay4Data()
 
   const pairs = parseSectionData(data)
 
