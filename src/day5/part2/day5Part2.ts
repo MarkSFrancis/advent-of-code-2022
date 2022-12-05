@@ -3,7 +3,7 @@ import { readDay5Data } from '../readData'
 import { executeCraneInstructions } from './executeCraneInstruction'
 import { getTopCratesFromStacks } from '../getTopCratesFromStacks'
 
-export const day5Part1 = () => {
+export const day5Part2 = () => {
   const data = readDay5Data()
 
   const supplyStacks = parseSupplyStacksData(data)
