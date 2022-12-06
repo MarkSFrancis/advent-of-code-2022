@@ -13,3 +13,4 @@ This year is my first time trying the Advent of Code. Although it's a language I
 - [Day 3](src/day3)
 - [Day 4](src/day4)
 - [Day 5](src/day5)
+- [Day 6](src/day6)
