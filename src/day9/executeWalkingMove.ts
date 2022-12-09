@@ -2,23 +2,23 @@ import { Coordinates } from '../utils/coordinates'
 import { RopeWalkingMoveDirection } from './parseWalkingMoves'
 
 export interface Locations {
-  tail: Coordinates
+  tails: Coordinates[]
   head: Coordinates
 }
 
 export const executeMoveStep = (
   locations: Locations,
   moveDirection: RopeWalkingMoveDirection
-) => {
+): Locations => {
   const head = getNewHeadCoordinates(locations.head, moveDirection)
-  const tail = moveTailToFollowHead({
+  const tails = moveTailsToFollowHead({
     head,
-    tail: locations.tail,
+    tails: locations.tails,
   })
 
   return {
     head,
-    tail,
+    tails,
   }
 }
 
@@ -50,9 +50,12 @@ const getNewHeadCoordinates = (
   }
 }
 
-const moveTailToFollowHead = (locations: Locations): Coordinates => {
-  const xDiff = locations.head.x - locations.tail.x
-  const yDiff = locations.head.y - locations.tail.y
+const moveTailPartToFollowLeader = (
+  leader: Coordinates,
+  tailPart: Coordinates
+): Coordinates => {
+  const xDiff = leader.x - tailPart.x
+  const yDiff = leader.y - tailPart.y
 
   let yChange = 0
   let xChange = 0
@@ -67,13 +70,38 @@ const moveTailToFollowHead = (locations: Locations): Coordinates => {
   } else if (Math.abs(yDiff) > 1) {
     // Narrow the gap
     yChange = yDiff > 0 ? 1 : -1
+
     if (xDiff !== 0) {
+      // Move diagonally
       xChange = xDiff > 0 ? 1 : -1
     }
   }
 
   return {
-    x: locations.tail.x + xChange,
-    y: locations.tail.y + yChange,
+    x: tailPart.x + xChange,
+    y: tailPart.y + yChange,
   }
+}
+
+const moveTailsToFollowHead = (locations: Locations): Coordinates[] => {
+  const newTails: Coordinates[] = []
+
+  for (let tailIdx = 0; tailIdx < locations.tails.length; tailIdx++) {
+    let newLocation: Coordinates
+    if (tailIdx === 0) {
+      newLocation = moveTailPartToFollowLeader(
+        locations.head,
+        locations.tails[0]
+      )
+    } else {
+      newLocation = moveTailPartToFollowLeader(
+        newTails[newTails.length - 1],
+        locations.tails[tailIdx]
+      )
+    }
+
+    newTails.push(newLocation)
+  }
+
+  return newTails
 }
