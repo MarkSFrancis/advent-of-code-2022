@@ -1,6 +1,7 @@
+import { Coordinates } from '../../utils/coordinates'
 import { parseForestData } from '../parseForestData'
 import { readDay8Data } from '../readData'
-import { Coordinates, isTreeHidden } from './isTreeHidden'
+import { isTreeHidden } from './isTreeHidden'
 
 export const day8Part1 = () => {
   const data = readDay8Data()
@@ -16,7 +17,7 @@ export const day8Part1 = () => {
     []
   )
 
-  const visibleTrees = treeArray.filter(t => !isTreeHidden(grid, t))
+  const visibleTrees = treeArray.filter((t) => !isTreeHidden(grid, t))
 
   console.table(visibleTrees.length)
 }

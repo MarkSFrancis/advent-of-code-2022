@@ -1,9 +1,5 @@
+import { Coordinates } from "../../utils/coordinates"
 import { ForestGrid, Tree } from '../parseForestData'
-
-export interface Coordinates {
-  x: number
-  y: number
-}
 
 export const getViewingScore = (
   grid: ForestGrid,
