@@ -5,17 +5,16 @@ export interface Monkey {
 }
 
 export interface MonkeyThrowTest {
-  truthyCheck: WorryLevelTestFunc
+  divisor: bigint
   ifTrue: MonkeyThrowAction
   ifFalse: MonkeyThrowAction
 }
 
 export interface HeldItem {
-  worryLevel: number
+  worryLevel: bigint
 }
 
-export type WorryLevelUpdateFunc = (worryLevel: number) => number
-export type WorryLevelTestFunc = (worryLevel: number) => boolean
+export type WorryLevelUpdateFunc = (worryLevel: bigint) => bigint
 
 export interface MonkeyThrowAction {
   throwItemToMonkeyId: number
@@ -39,10 +38,10 @@ const parseMonkey = (rawData: string): Monkey => {
 
   return {
     itemsHeld: rawMonkey.startingItems.split(', ').map<HeldItem>((i) => ({
-      worryLevel: parseInt(i),
+      worryLevel: BigInt(parseInt(i)),
     })),
     test: {
-      truthyCheck: parseTestToFunction(rawMonkey.test),
+      divisor: BigInt(parseInt(rawMonkey.test)),
       ifTrue: {
         throwItemToMonkeyId: parseInt(rawMonkey.testIfTrue),
       },
@@ -85,12 +84,6 @@ const extractRawMonkeyMeta = (
   }
 }
 
-const parseTestToFunction = (rawTest: string): WorryLevelTestFunc => {
-  const divisor = parseInt(rawTest)
-
-  return (worryLevel) => worryLevel % divisor === 0
-}
-
 const parseOperationToFunction = (
   rawOperation: string
 ): WorryLevelUpdateFunc => {
@@ -98,18 +91,18 @@ const parseOperationToFunction = (
   const variableOld = 'old'
 
   return (worryLevel) => {
-    let leftVal: number
+    let leftVal: bigint
     if (leftValRaw === variableOld) {
       leftVal = worryLevel
     } else {
-      leftVal = parseFloat(leftValRaw)
+      leftVal = BigInt(parseInt(leftValRaw))
     }
 
-    let rightVal: number
+    let rightVal: bigint
     if (rightValRaw === variableOld) {
       rightVal = worryLevel
     } else {
-      rightVal = parseFloat(rightValRaw)
+      rightVal = BigInt(parseFloat(rightValRaw))
     }
 
     if (operandRaw === '+') {
