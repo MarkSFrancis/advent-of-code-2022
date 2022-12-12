@@ -1,3 +1,4 @@
+import { sortBy } from "../../utils/sortBy"
 import { foldersToArray } from '../foldersToArray'
 import { getFileStructureFromCliOutput } from '../getFileStructureFromCliOutput'
 import { getTotalSizeOfDir } from '../getTotalSizeOfDir'
@@ -20,7 +21,7 @@ export const day7Part2 = () => {
     .map((f) => getTotalSizeOfDir(f))
     .filter((f) => f >= minimumSpaceNeededToFreeUp)
 
-  const folderToDeleteSize = folderDeletionCandidatesSizes.sort((a, b) => a - b)[0]
+  const folderToDeleteSize = sortBy(folderDeletionCandidatesSizes, a => a)[0]
 
   console.log(folderToDeleteSize)
 }

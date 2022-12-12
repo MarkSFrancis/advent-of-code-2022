@@ -3,6 +3,10 @@ export interface Coordinates {
   y: number
 }
 
+export interface CoordinatesValue<T> extends Coordinates {
+  value: T
+}
+
 export const logGrid = (coordinates: Coordinates[]) => {
   const maxX = coordinates.reduce((maxX, c) => (c.x > maxX ? c.x : maxX), 0)
   const maxY = coordinates.reduce((maxY, c) => (c.y > maxY ? c.y : maxY), 0)
