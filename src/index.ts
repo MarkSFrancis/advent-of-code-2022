@@ -1,3 +1,3 @@
-import { day12Part2 } from './day12/part2/day12Part2'
+import { day13Part1 } from './day13/part1/day13Part1'
 
-day12Part2()
+day13Part1()
