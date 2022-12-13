@@ -1,4 +1,4 @@
-import { SignalPair, SignalValue } from '../parseDistressSignal'
+import { SignalPair, SignalValue } from './parseDistressSignal'
 
 export enum AnalysisResult {
   InOrder = 'InOrder',
@@ -6,7 +6,7 @@ export enum AnalysisResult {
   Indeterminate = 'Indeterminate',
 }
 
-export const analysePairs = (pair: SignalPair): AnalysisResult => {
+export const analyseSignalPairs = (pair: SignalPair): AnalysisResult => {
   if (pair.leftSide === undefined) {
     if (pair.rightSide === undefined) {
       return AnalysisResult.Indeterminate
@@ -21,13 +21,13 @@ export const analysePairs = (pair: SignalPair): AnalysisResult => {
     if (isArray(pair.rightSide)) {
       return isRangeInOrder(pair.leftSide, pair.rightSide)
     } else {
-      const result = analysePairs({
+      const result = analyseSignalPairs({
         leftSide: pair.leftSide[0],
         rightSide: pair.rightSide,
       })
 
       return result === AnalysisResult.Indeterminate
-        ? analysePairs({
+        ? analyseSignalPairs({
             leftSide: pair.leftSide[1],
             rightSide: undefined,
           })
@@ -35,13 +35,13 @@ export const analysePairs = (pair: SignalPair): AnalysisResult => {
     }
   } else {
     if (isArray(pair.rightSide)) {
-      const result = analysePairs({
+      const result = analyseSignalPairs({
         leftSide: pair.leftSide,
         rightSide: pair.rightSide[0],
       })
 
       return result === AnalysisResult.Indeterminate
-        ? analysePairs({
+        ? analyseSignalPairs({
             leftSide: undefined,
             rightSide: pair.rightSide[1],
           })
@@ -60,7 +60,10 @@ export const analysePairs = (pair: SignalPair): AnalysisResult => {
 
 const isRangeInOrder = (left: SignalValue[], right: SignalValue[]) => {
   for (let idx = 0; idx < Math.max(left.length, right.length); idx++) {
-    const result = analysePairs({ leftSide: left[idx], rightSide: right[idx] })
+    const result = analyseSignalPairs({
+      leftSide: left[idx],
+      rightSide: right[idx],
+    })
     if (result === AnalysisResult.InOrder) {
       return AnalysisResult.InOrder
     } else if (result === AnalysisResult.NotInOrder) {

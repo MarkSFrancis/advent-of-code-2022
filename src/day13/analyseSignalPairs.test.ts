@@ -1,7 +1,7 @@
-import { analysePairs, AnalysisResult } from './analysePairs'
+import { analyseSignalPairs, AnalysisResult } from './analyseSignalPairs'
 
 it('should say it is in order if the left is lower than the right', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: 0,
     rightSide: 1,
   })
@@ -10,7 +10,7 @@ it('should say it is in order if the left is lower than the right', () => {
 })
 
 it('should say it is not in order if the left is higher than the right', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: 1,
     rightSide: 0,
   })
@@ -19,7 +19,7 @@ it('should say it is not in order if the left is higher than the right', () => {
 })
 
 it('should say it is in order if the left is a list with a lower value than the right match', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [0],
     rightSide: [1],
   })
@@ -28,7 +28,7 @@ it('should say it is in order if the left is a list with a lower value than the 
 })
 
 it('should say it is not in order if the left is a list with a higher value than the right match', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [1],
     rightSide: [0],
   })
@@ -37,7 +37,7 @@ it('should say it is not in order if the left is a list with a higher value than
 })
 
 it('should say it is in order if the left is a shorter list than the right and values match', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [],
     rightSide: [0],
   })
@@ -46,7 +46,7 @@ it('should say it is in order if the left is a shorter list than the right and v
 })
 
 it('should say it is not in order if the left is a longer list than the right and values match', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [0],
     rightSide: [],
   })
@@ -55,7 +55,7 @@ it('should say it is not in order if the left is a longer list than the right an
 })
 
 it('should say it is not in order if the left is a longer list than the right and values match', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [0, 1],
     rightSide: [0],
   })
@@ -64,7 +64,7 @@ it('should say it is not in order if the left is a longer list than the right an
 })
 
 it.only('should say it is in order if the left is a longer wrapping list than the right, but the right nested list is longer', () => {
-  const result = analysePairs({
+  const result = analyseSignalPairs({
     leftSide: [0, 1],
     rightSide: [[0, 1]],
   })
