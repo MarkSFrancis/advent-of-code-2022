@@ -7,11 +7,40 @@ export interface CoordinatesValue<T> extends Coordinates {
   value: T
 }
 
-export const logGrid = (coordinates: Coordinates[]) => {
+export const logGrid = (
+  coordinates: Coordinates[],
+  options: Partial<LogGridValuesOptions> = {}
+) => {
+  logGridValues(
+    coordinates.map((c) => ({ ...c, value: '#' })),
+    options
+  )
+}
+
+export interface LogGridValuesOptions {
+  missingCoordinateValueText: string
+  yOrder: 'asc' | 'desc'
+}
+
+export const logGridValues = <T extends string>(
+  coordinates: CoordinatesValue<T>[],
+  options: Partial<LogGridValuesOptions> = {}
+) => {
+  const optionsWithDefaults = {
+    ...{ missingCoordinateValue: '•', yOrder: 'asc' },
+    ...options,
+  }
+
   const maxX = coordinates.reduce((maxX, c) => (c.x > maxX ? c.x : maxX), 0)
   const maxY = coordinates.reduce((maxY, c) => (c.y > maxY ? c.y : maxY), 0)
-  const minX = coordinates.reduce((minX, c) => (c.x < minX ? c.x : minX), 0)
-  const minY = coordinates.reduce((minY, c) => (c.y < minY ? c.y : minY), 0)
+  const minX = coordinates.reduce(
+    (minX, c) => (c.x < minX ? c.x : minX),
+    coordinates.length === 0 ? 0 : Infinity
+  )
+  const minY = coordinates.reduce(
+    (minY, c) => (c.y < minY ? c.y : minY),
+    coordinates.length === 0 ? 0 : Infinity
+  )
 
   const arr: string[] = []
 
@@ -19,15 +48,20 @@ export const logGrid = (coordinates: Coordinates[]) => {
     let xArr: string = ''
 
     for (let xIdx = minX; xIdx <= maxX; xIdx++) {
-      if (coordinates.some((c) => c.x === xIdx && c.y === yIdx)) {
-        xArr += '#'
+      const firstMatch = coordinates.find((c) => c.x === xIdx && c.y === yIdx)
+      if (firstMatch) {
+        xArr += firstMatch.value
       } else {
-        xArr += '•'
+        xArr += optionsWithDefaults.missingCoordinateValue
       }
     }
 
     arr.push(xArr)
   }
 
-  console.log(arr.reverse().join('\n'))
+  if (optionsWithDefaults.yOrder === 'asc') {
+    arr.reverse()
+  }
+
+  console.log(arr.join('\n'))
 }

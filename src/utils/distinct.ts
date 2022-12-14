@@ -34,7 +34,7 @@ export function distinctBy<T>(
   const results: T[] = []
 
   for (const item of items) {
-    if (!results.some((item2) => areEqual(item, item2))) {
+    if (results.every((item2) => !areEqual(item, item2))) {
       results.push(item)
     }
   }
